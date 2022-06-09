@@ -25,7 +25,7 @@ print(result)
 #### Authentication
 The client must be configured with a valid api access token to call this
 action. The token must include at least one of the following scopes:
-all.Organization, all.Organization.read, all.User, all.User.read, applications.*, or applications.get.
+all.Organization, all.Organization.read, all.User, all.User.cli, all.User.read, applications.*, or applications.get.
 
 #### Available Parameters
 
@@ -34,7 +34,7 @@ all.Organization, all.Organization.read, all.User, all.User.read, applications.*
 | sortField | string | N | Field to sort the results by. Accepted values are: name, id, creationDate, ownerId, lastUpdated | name | name |
 | sortDirection | string | N | Direction to sort the results by. Accepted values are: asc, desc | asc | asc |
 | page | string | N | Which page of results to return | 0 | 0 |
-| perPage | string | N | How many items to return per page | 1000 | 10 |
+| perPage | string | N | How many items to return per page | 100 | 10 |
 | filterField | string | N | Field to filter the results by. Blank or not provided means no filtering. Accepted values are: name |  | name |
 | filter | string | N | Filter to apply against the filtered field. Supports globbing. Blank or not provided means no filtering. |  | my * app |
 | orgId | string | N | If not provided, return all applications. If provided but blank, only return applications belonging to the current user. If provided and an id, only return applications belonging to the given organization id. |  | 575ecdf07ae143cd83dc4a9a |
@@ -61,7 +61,7 @@ all.Organization, all.Organization.read, all.User, all.User.read, applications.*
 Create a new application from an import bundle
 
 ```python
-result = client.applications.api_import(importBundle=my_import_bundle)
+result = client.applications.api_import(**optional_params)
 
 print(result)
 ```
@@ -75,13 +75,14 @@ all.Organization, all.User, applications.*, or applications.import.
 
 | Name | Type | Required | Description | Default | Example |
 | ---- | ---- | -------- | ----------- | ------- | ------- |
-| importBundle | file | Y | The zip file containing the application to import and all of its resources |  | undefined |
+| importBundle | file | N | The zip file containing the application to import and all of its resources |  | undefined |
 | ownerId | string | N | The owner id of the new application, defaults to the id of the user making the request |  | 575ed6e87ae143cd83dc4aa8 |
 | ownerType | string | N | The type of the owner id. Accepted values are: user, organization | user | user |
 | includeDevices | string | N | If set, import devices from the import bundle |  | true |
 | includeDataTableRows | string | N | If set, import data table rows from import bundle |  | true |
 | includeFiles | string | N | If set, import files from import bundle |  | true |
 | email | string | N | Email address to notify the user when the job to import the application has completed or errored, defaults to the email address of the user making the request |  | email@example.com |
+| options | [Applications Import Options](_schemas.md#applications-import-options) | N | Additional import options |  | [Applications Import Options Example](_schemas.md#applications-import-options-example) |
 | losantdomain | string | N | Domain scope of request (rarely needed) |  | example.com |
 
 #### Successful Responses

@@ -1,7 +1,31 @@
+"""
+The MIT License (MIT)
+
+Copyright (c) 2022 WEGnology
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 
 import json
 
-""" Module for Losant API Application wrapper class """
+""" Module for WEGnology API Application wrapper class """
 # pylint: disable=C0301
 
 class Application(object):
@@ -9,6 +33,55 @@ class Application(object):
 
     def __init__(self, client):
         self.client = client
+
+    def apply_template(self, **kwargs):
+        """
+        Add resources to an application via an application template
+
+        Authentication:
+        The client must be configured with a valid api
+        access token to call this action. The token
+        must include at least one of the following scopes:
+        all.Application, all.Organization, all.User, application.*, or application.applyTemplate.
+
+        Parameters:
+        *  {string} applicationId - ID of the associated application
+        *  {hash} options - Object containing template import options (https://api.app.wnology.io/#/definitions/applicationApplyTemplatePatch)
+        *  {string} losantdomain - Domain scope of request (rarely needed)
+        *  {boolean} _actions - Return resource actions in response
+        *  {boolean} _links - Return resource link in response
+        *  {boolean} _embedded - Return embedded resources in response
+
+        Responses:
+        *  200 - Updated application information (https://api.app.wnology.io/#/definitions/application)
+        *  202 - If a job was enqueued for the resources to be imported into the application (https://api.app.wnology.io/#/definitions/jobEnqueuedResult)
+
+        Errors:
+        *  400 - Error if malformed request (https://api.app.wnology.io/#/definitions/error)
+        *  404 - Error if application is not found (https://api.app.wnology.io/#/definitions/error)
+        """
+
+        query_params = {"_actions": "false", "_links": "true", "_embedded": "true"}
+        path_params = {}
+        headers = {}
+        body = None
+
+        if "applicationId" in kwargs:
+            path_params["applicationId"] = kwargs["applicationId"]
+        if "options" in kwargs:
+            body = kwargs["options"]
+        if "losantdomain" in kwargs:
+            headers["losantdomain"] = kwargs["losantdomain"]
+        if "_actions" in kwargs:
+            query_params["_actions"] = kwargs["_actions"]
+        if "_links" in kwargs:
+            query_params["_links"] = kwargs["_links"]
+        if "_embedded" in kwargs:
+            query_params["_embedded"] = kwargs["_embedded"]
+
+        path = "/applications/{applicationId}/applyTemplate".format(**path_params)
+
+        return self.client.request("PATCH", path, params=query_params, headers=headers, body=body)
 
     def archive_data(self, **kwargs):
         """
@@ -346,7 +419,7 @@ class Application(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.read, application.*, or application.get.
+        all.Application, all.Application.cli, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.cli, all.User.read, application.*, or application.get.
 
         Parameters:
         *  {string} applicationId - ID of the associated application
@@ -388,6 +461,54 @@ class Application(object):
         path = "/applications/{applicationId}".format(**path_params)
 
         return self.client.request("GET", path, params=query_params, headers=headers, body=body)
+
+    def globals(self, **kwargs):
+        """
+        Updates an application global at the given key
+
+        Authentication:
+        The client must be configured with a valid api
+        access token to call this action. The token
+        must include at least one of the following scopes:
+        all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, application.*, or application.patch.
+
+        Parameters:
+        *  {string} applicationId - ID of the associated application
+        *  {hash} globals - Array of objects containing new application global information (https://api.app.wnology.io/#/definitions/applicationGlobalPatch)
+        *  {string} losantdomain - Domain scope of request (rarely needed)
+        *  {boolean} _actions - Return resource actions in response
+        *  {boolean} _links - Return resource link in response
+        *  {boolean} _embedded - Return embedded resources in response
+
+        Responses:
+        *  200 - Updated application information (https://api.app.wnology.io/#/definitions/application)
+
+        Errors:
+        *  400 - Error if malformed request (https://api.app.wnology.io/#/definitions/error)
+        *  404 - Error if application was not found (https://api.app.wnology.io/#/definitions/error)
+        """
+
+        query_params = {"_actions": "false", "_links": "true", "_embedded": "true"}
+        path_params = {}
+        headers = {}
+        body = None
+
+        if "applicationId" in kwargs:
+            path_params["applicationId"] = kwargs["applicationId"]
+        if "globals" in kwargs:
+            body = kwargs["globals"]
+        if "losantdomain" in kwargs:
+            headers["losantdomain"] = kwargs["losantdomain"]
+        if "_actions" in kwargs:
+            query_params["_actions"] = kwargs["_actions"]
+        if "_links" in kwargs:
+            query_params["_links"] = kwargs["_links"]
+        if "_embedded" in kwargs:
+            query_params["_embedded"] = kwargs["_embedded"]
+
+        path = "/applications/{applicationId}/globals".format(**path_params)
+
+        return self.client.request("PATCH", path, params=query_params, headers=headers, body=body)
 
     def mqtt_publish_message(self, **kwargs):
         """
@@ -445,7 +566,7 @@ class Application(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Organization, all.User, application.*, or application.patch.
+        all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, application.*, or application.patch.
 
         Parameters:
         *  {string} applicationId - ID of the associated application
@@ -511,7 +632,7 @@ class Application(object):
         *  {boolean} _embedded - Return embedded resources in response
 
         Responses:
-        *  200 - Payload counts, by type and source (https://api.app.wnology.io/#/definitions/payloadCounts)
+        *  200 - Payload counts, by type and source (https://api.app.wnology.io/#/definitions/payloadStats)
 
         Errors:
         *  400 - Error if malformed request (https://api.app.wnology.io/#/definitions/error)
@@ -550,7 +671,7 @@ class Application(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.read, application.*, or application.get.
+        all.Application, all.Application.cli, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.cli, all.User.read, application.*, or application.get.
 
         Parameters:
         *  {string} applicationId - ID of the associated application
@@ -595,7 +716,7 @@ class Application(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Organization, all.User, application.*, or application.patch.
+        all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, application.*, or application.patch.
 
         Parameters:
         *  {string} applicationId - ID of the associated application

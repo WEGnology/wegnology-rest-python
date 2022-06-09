@@ -6,6 +6,7 @@ parameters and the potential responses.
 
 ##### Contents
 
+*   [Apply Template](#apply-template)
 *   [Archive Data](#archive-data)
 *   [Backfill Archive Data](#backfill-archive-data)
 *   [Clone](#clone)
@@ -14,6 +15,7 @@ parameters and the potential responses.
 *   [Full Data Tables Archive](#full-data-tables-archive)
 *   [Full Events Archive](#full-events-archive)
 *   [Get](#get)
+*   [Globals](#globals)
 *   [Import](#import)
 *   [Mqtt Publish Message](#mqtt-publish-message)
 *   [Patch](#patch)
@@ -21,6 +23,47 @@ parameters and the potential responses.
 *   [Readme](#readme)
 *   [Readme Patch](#readme-patch)
 *   [Search](#search)
+
+<br/>
+
+## Apply Template
+
+Add resources to an application via an application template
+
+```python
+result = client.application.apply_template(
+    applicationId=my_application_id,
+    options=my_options)
+
+print(result)
+```
+
+#### Authentication
+The client must be configured with a valid api access token to call this
+action. The token must include at least one of the following scopes:
+all.Application, all.Organization, all.User, application.*, or application.applyTemplate.
+
+#### Available Parameters
+
+| Name | Type | Required | Description | Default | Example |
+| ---- | ---- | -------- | ----------- | ------- | ------- |
+| applicationId | string | Y | ID of the associated application |  | 575ec8687ae143cd83dc4a97 |
+| options | [Application Apply Template Patch Schema](_schemas.md#application-apply-template-patch-schema) | Y | Object containing template import options |  | [Application Apply Template Patch Schema Example](_schemas.md#application-apply-template-patch-schema-example) |
+| losantdomain | string | N | Domain scope of request (rarely needed) |  | example.com |
+
+#### Successful Responses
+
+| Code | Type | Description |
+| ---- | ---- | ----------- |
+| 200 | [Application](_schemas.md#application) | Updated application information |
+| 202 | [Job Enqueued API Result](_schemas.md#job-enqueued-api-result) | If a job was enqueued for the resources to be imported into the application |
+
+#### Error Responses
+
+| Code | Type | Description |
+| ---- | ---- | ----------- |
+| 400 | [Error](_schemas.md#error) | Error if malformed request |
+| 404 | [Error](_schemas.md#error) | Error if application is not found |
 
 <br/>
 
@@ -307,7 +350,7 @@ print(result)
 #### Authentication
 The client must be configured with a valid api access token to call this
 action. The token must include at least one of the following scopes:
-all.Application, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.read, application.*, or application.get.
+all.Application, all.Application.cli, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.cli, all.User.read, application.*, or application.get.
 
 #### Available Parameters
 
@@ -333,14 +376,52 @@ all.Application, all.Application.read, all.Organization, all.Organization.read, 
 
 <br/>
 
+## Globals
+
+Updates an application global at the given key
+
+```python
+result = client.application.globals(
+    applicationId=my_application_id,
+    globals=my_globals)
+
+print(result)
+```
+
+#### Authentication
+The client must be configured with a valid api access token to call this
+action. The token must include at least one of the following scopes:
+all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, application.*, or application.patch.
+
+#### Available Parameters
+
+| Name | Type | Required | Description | Default | Example |
+| ---- | ---- | -------- | ----------- | ------- | ------- |
+| applicationId | string | Y | ID of the associated application |  | 575ec8687ae143cd83dc4a97 |
+| globals | [Application Global Patch](_schemas.md#application-global-patch) | Y | Array of objects containing new application global information |  | [Application Global Patch Example](_schemas.md#application-global-patch-example) |
+| losantdomain | string | N | Domain scope of request (rarely needed) |  | example.com |
+
+#### Successful Responses
+
+| Code | Type | Description |
+| ---- | ---- | ----------- |
+| 200 | [Application](_schemas.md#application) | Updated application information |
+
+#### Error Responses
+
+| Code | Type | Description |
+| ---- | ---- | ----------- |
+| 400 | [Error](_schemas.md#error) | Error if malformed request |
+| 404 | [Error](_schemas.md#error) | Error if application was not found |
+
+<br/>
+
 ## Import
 
 Add multiple resources to an application via a zip file
 
 ```python
-result = client.application.api_import(
-    applicationId=my_application_id,
-    importBundle=my_import_bundle)
+result = client.application.api_import(applicationId=my_application_id)
 
 print(result)
 ```
@@ -355,8 +436,9 @@ all.Application, all.Organization, all.User, application.*, or application.impor
 | Name | Type | Required | Description | Default | Example |
 | ---- | ---- | -------- | ----------- | ------- | ------- |
 | applicationId | string | Y | ID of the associated application |  | 575ec8687ae143cd83dc4a97 |
-| importBundle | file | Y | The zip file containing all of the resources to import into the application |  | undefined |
+| importBundle | file | N | The zip file containing all of the resources to import into the application |  | undefined |
 | email | string | N | Email address to notify the user when the job to import the application resources has completed or errored, defaults to the email address of the user making the request |  | email@example.com |
+| options | [Application Import Options](_schemas.md#application-import-options) | N | Additional import options |  | [Application Import Options Example](_schemas.md#application-import-options-example) |
 | losantdomain | string | N | Domain scope of request (rarely needed) |  | example.com |
 
 #### Successful Responses
@@ -430,7 +512,7 @@ print(result)
 #### Authentication
 The client must be configured with a valid api access token to call this
 action. The token must include at least one of the following scopes:
-all.Application, all.Organization, all.User, application.*, or application.patch.
+all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, application.*, or application.patch.
 
 #### Available Parameters
 
@@ -485,7 +567,7 @@ all.Application, all.Application.read, all.Organization, all.Organization.read, 
 
 | Code | Type | Description |
 | ---- | ---- | ----------- |
-| 200 | [Payload Counts](_schemas.md#payload-counts) | Payload counts, by type and source |
+| 200 | [Payload Stats](_schemas.md#payload-stats) | Payload counts, by type and source |
 
 #### Error Responses
 
@@ -509,7 +591,7 @@ print(result)
 #### Authentication
 The client must be configured with a valid api access token to call this
 action. The token must include at least one of the following scopes:
-all.Application, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.read, application.*, or application.get.
+all.Application, all.Application.cli, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.cli, all.User.read, application.*, or application.get.
 
 #### Available Parameters
 
@@ -548,7 +630,7 @@ print(result)
 #### Authentication
 The client must be configured with a valid api access token to call this
 action. The token must include at least one of the following scopes:
-all.Application, all.Organization, all.User, application.*, or application.patch.
+all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, application.*, or application.patch.
 
 #### Available Parameters
 
