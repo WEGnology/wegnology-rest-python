@@ -1,7 +1,31 @@
+"""
+The MIT License (MIT)
+
+Copyright (c) 2022 WEGnology
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 
 import json
 
-""" Module for Losant API ExperienceEndpoint wrapper class """
+""" Module for WEGnology API ExperienceEndpoint wrapper class """
 # pylint: disable=C0301
 
 class ExperienceEndpoint(object):
@@ -23,6 +47,7 @@ class ExperienceEndpoint(object):
         Parameters:
         *  {string} applicationId - ID associated with the application
         *  {string} experienceEndpointId - ID associated with the experience endpoint
+        *  {string} includeWorkflows - If the workflows that utilize this experience endpoint should also be deleted.
         *  {string} losantdomain - Domain scope of request (rarely needed)
         *  {boolean} _actions - Return resource actions in response
         *  {boolean} _links - Return resource link in response
@@ -45,6 +70,8 @@ class ExperienceEndpoint(object):
             path_params["applicationId"] = kwargs["applicationId"]
         if "experienceEndpointId" in kwargs:
             path_params["experienceEndpointId"] = kwargs["experienceEndpointId"]
+        if "includeWorkflows" in kwargs:
+            query_params["includeWorkflows"] = kwargs["includeWorkflows"]
         if "losantdomain" in kwargs:
             headers["losantdomain"] = kwargs["losantdomain"]
         if "_actions" in kwargs:

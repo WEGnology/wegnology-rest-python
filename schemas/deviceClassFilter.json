@@ -9,7 +9,8 @@
         "peripheral",
         "floating",
         "edgeCompute",
-        "system"
+        "system",
+        "embedded"
       ]
     },
     {
@@ -22,10 +23,10 @@
           "peripheral",
           "floating",
           "edgeCompute",
-          "system"
+          "system",
+          "embedded"
         ]
-      },
-      "additionalProperties": false
+      }
     }
   ]
 }
