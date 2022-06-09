@@ -1,7 +1,31 @@
+"""
+The MIT License (MIT)
+
+Copyright (c) 2022 WEGnology
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 
 import json
 
-""" Module for Losant API ExperienceVersion wrapper class """
+""" Module for WEGnology API ExperienceVersion wrapper class """
 # pylint: disable=C0301
 
 class ExperienceVersion(object):
@@ -18,7 +42,7 @@ class ExperienceVersion(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Organization, all.User, experienceVersion.*, or experienceVersion.delete.
+        all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, experienceVersion.*, or experienceVersion.delete.
 
         Parameters:
         *  {string} applicationId - ID associated with the application
@@ -66,7 +90,7 @@ class ExperienceVersion(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.read, experienceVersion.*, or experienceVersion.get.
+        all.Application, all.Application.cli, all.Application.read, all.Organization, all.Organization.read, all.User, all.User.cli, all.User.read, experienceVersion.*, or experienceVersion.get.
 
         Parameters:
         *  {string} applicationId - ID associated with the application
@@ -114,7 +138,7 @@ class ExperienceVersion(object):
         The client must be configured with a valid api
         access token to call this action. The token
         must include at least one of the following scopes:
-        all.Application, all.Organization, all.User, experienceVersion.*, or experienceVersion.patch.
+        all.Application, all.Application.cli, all.Organization, all.User, all.User.cli, experienceVersion.*, or experienceVersion.patch.
 
         Parameters:
         *  {string} applicationId - ID associated with the application
